@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { RoutePath } from 'Router'
 import { useAuth } from 'hooks/useStore'
 
@@ -10,7 +10,7 @@ export interface IRequireUser {
 }
 interface IProtectedRouteProps {
   allow: IRequireUser
-  children: JSX.Element
+  children?: JSX.Element
 }
 
 const ProtectedRoute = ({ allow, children }: IProtectedRouteProps) => {
@@ -25,7 +25,7 @@ const ProtectedRoute = ({ allow, children }: IProtectedRouteProps) => {
     return <Navigate to={'/'} state={{ from: location }} replace />
   }
 
-  return children
+  return children ? children : <Outlet />
 }
 
 export default ProtectedRoute

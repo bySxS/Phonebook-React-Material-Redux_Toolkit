@@ -1,15 +1,15 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 
-const ListPhone = () => {
+const ViewContact = () => {
   return (
     <>
-      <Helmet titleTemplate={'Login'}>
-        <title>List contacts</title>
+      <Helmet title={'View contacts'}>
         <meta charSet="utf-8" />
       </Helmet>
+      <div>View</div>
     </>
   )
 }
 
-export default ListPhone
+export default ViewContact

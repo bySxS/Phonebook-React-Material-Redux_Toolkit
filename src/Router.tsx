@@ -1,12 +1,12 @@
 import React, { Suspense, lazy } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import ProtectedRoute from 'shared/ProtectedRoute/ProtectedRoute'
 import Loader from 'shared/Loader/Loader'
 const Login = lazy(() => import('pages/Login/Login'))
-const ListPhone = lazy(() => import('pages/ListPhone/ListPhone'))
-const AddPhone = lazy(() => import('pages/AddPhone/AddPhone'))
-const EditPhone = lazy(() => import('pages/EditPhone/EditPhone'))
-const ViewPhone = lazy(() => import('pages/ViewPhone/ViewPhone'))
+const ListContacts = lazy(() => import('pages/ListContact/ListContact'))
+const AddContact = lazy(() => import('pages/AddContact/AddContact'))
+const EditContact = lazy(() => import('pages/EditContact/EditContact'))
+const ViewContact = lazy(() => import('pages/ViewContact/ViewContact'))
 const Error404 = lazy(() => import('pages/Error404/Error404'))
 
 export interface IRoute {
@@ -21,8 +21,7 @@ export enum RoutePath {
   VIEW_PHONE = '/:id',
   LOGIN = '/login',
   ADD_PHONE = '/add',
-  EDIT_PHONE = '/edit/:id',
-  ERROR_404 = '/404'
+  EDIT_PHONE = '/edit/:id'
 }
 
 export const routes: IRoute[] = [
@@ -30,7 +29,7 @@ export const routes: IRoute[] = [
     path: RoutePath.LIST_PHONE,
     allowAuth: true,
     lazy: true,
-    element: <ListPhone />
+    element: <ListContacts />
   },
   {
     path: RoutePath.LOGIN,
@@ -42,28 +41,24 @@ export const routes: IRoute[] = [
     path: RoutePath.VIEW_PHONE,
     allowAuth: true,
     lazy: true,
-    element: <ViewPhone />,
+    element: <ViewContact />,
   },
   {
     path: RoutePath.ADD_PHONE,
     allowAuth: true,
     lazy: true,
-    element: <AddPhone />
+    element: <AddContact />
   },
   {
     path: RoutePath.EDIT_PHONE,
     allowAuth: true,
     lazy: true,
-    element: <EditPhone />
-  },
-  {
-    path: RoutePath.ERROR_404,
-    lazy: true,
-    element: <Error404 />
+    element: <EditContact />
   },
   {
     path: '*',
-    element: <Navigate replace to="/404" />
+    lazy: true,
+    element: <Error404 />
   }
 ]
 

@@ -1,15 +1,15 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 
-const Error404 = () => {
+const ListContact = () => {
   return (
     <>
-      <Helmet title={'404 Error'}>
+      <Helmet title={'List contacts'}>
         <meta charSet="utf-8" />
       </Helmet>
-      <div>Error 404</div>
+      <div>List contacts</div>
     </>
   )
 }
 
-export default Error404
+export default ListContact

@@ -48,8 +48,7 @@ const Login = () => {
 
   return (
     <>
-      <Helmet titleTemplate={'Login'}>
-        <title>Login</title>
+      <Helmet title={'Login'}>
         <meta charSet="utf-8" />
       </Helmet>
     <Box
