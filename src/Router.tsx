@@ -1,19 +1,17 @@
-import React, {
-  ReactNode, Suspense, lazy
-} from 'react'
+import React, { Suspense, lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import requireAccess from 'features/components/AccessMiddleware/AccessMiddleware'
-import Loader from 'shared/UI/Loader/Loader'
-const Login = lazy(() => import('features/pages/Login/Login'))
-const ListPhone = lazy(() => import('features/pages/ListPhone/ListPhone'))
-const AddPhone = lazy(() => import('features/pages/AddPhone/AddPhone'))
-const EditPhone = lazy(() => import('features/pages/EditPhone/EditPhone'))
-const ViewPhone = lazy(() => import('features/pages/ViewPhone/ViewPhone'))
-const Error404 = lazy(() => import('features/pages/Error404/Error404'))
+import ProtectedRoute from 'shared/ProtectedRoute/ProtectedRoute'
+import Loader from 'shared/Loader/Loader'
+const Login = lazy(() => import('pages/Login/Login'))
+const ListPhone = lazy(() => import('pages/ListPhone/ListPhone'))
+const AddPhone = lazy(() => import('pages/AddPhone/AddPhone'))
+const EditPhone = lazy(() => import('pages/EditPhone/EditPhone'))
+const ViewPhone = lazy(() => import('pages/ViewPhone/ViewPhone'))
+const Error404 = lazy(() => import('pages/Error404/Error404'))
 
 export interface IRoute {
   path: string
-  element: ReactNode
+  element: JSX.Element
   lazy?: boolean
   allowAuth?: boolean
 }
@@ -36,6 +34,7 @@ export const routes: IRoute[] = [
   },
   {
     path: RoutePath.LOGIN,
+    allowAuth: false,
     lazy: true,
     element: <Login />
   },
@@ -68,12 +67,11 @@ export const routes: IRoute[] = [
   }
 ]
 
-const lazyReturn = (element: ReactNode, lazy: boolean | undefined): ReactNode => {
+const lazyReturn = (children: JSX.Element, lazy?: boolean): JSX.Element => {
   if (lazy !== undefined && lazy) {
-    return <Suspense fallback={<Loader alwaysShow={true}/>}>{element}</Suspense>
-  } else {
-    return element
+    return <Suspense fallback={<Loader alwaysShow={true}/>}>{children}</Suspense>
   }
+  return children
 }
 
 const AppRouter = () => {
@@ -81,24 +79,15 @@ const AppRouter = () => {
     <>
       <Routes>
         {routes.map(route =>
-          (route.allowAuth !== undefined)
-            ? (<Route
+          <Route
               key={route.path}
               path={route.path}
-              element={requireAccess({
+              element={<ProtectedRoute allow={{
                 allowedAuth: route.allowAuth
-              })}
-            >
-              <Route
-                index
-                element={lazyReturn(route.element, route.lazy)}
-              />
-            </Route>)
-            : (<Route
-              key={route.path}
-              path={route.path}
-              element={lazyReturn(route.element, route.lazy)}
-            />)
+              }}>
+                  {lazyReturn(route.element, route.lazy)}
+              </ProtectedRoute>}
+            />
         )}
       </Routes>
     </>

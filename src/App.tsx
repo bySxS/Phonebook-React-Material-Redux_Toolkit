@@ -1,9 +1,10 @@
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import React from 'react';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import 'styles/App.css';
-import Header from 'features/components/Header/Header'
-import Main from 'features/components/Main/Main'
-import Footer from 'features/components/Footer/Footer'
+import Header from 'shared/Header/Header'
+import Main from 'shared/Main/Main'
+import Footer from 'shared/Footer/Footer'
+import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
 import AppRouter from './Router'
 
@@ -20,6 +21,7 @@ const theme = createTheme({
 
 function App() {
   return (
+    <HelmetProvider>
     <BrowserRouter>
     <div className="App">
       <ThemeProvider theme={theme}>
@@ -32,6 +34,7 @@ function App() {
       </ThemeProvider>
     </div>
     </BrowserRouter>
+    </HelmetProvider>
   );
 }
 

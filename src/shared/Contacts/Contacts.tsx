@@ -3,10 +3,10 @@ import {
   CardContent, CardMedia, Grid, Typography
 } from '@mui/material'
 import React, { useState } from 'react'
-import { PhonesInterface } from 'ts-types/Phones.interface'
+import { IContacts } from 'ts-types/Contacts.interface'
 
 const Contacts = () => {
-  const [contacts] = useState<PhonesInterface[]>([])
+  const [contacts] = useState<IContacts[]>([])
 
   return (
     <Grid container spacing={4}>

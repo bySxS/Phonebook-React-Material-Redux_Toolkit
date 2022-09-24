@@ -3,7 +3,7 @@ export interface IName {
   last: string;
 }
 
-export interface PhonesInterface {
+export interface IContacts {
   id: string;
   isActive: boolean;
   age: number;
