@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from 'shared/ProtectedRoute/ProtectedRoute'
 import Loader from 'shared/Loader/Loader'
 const Login = lazy(() => import('pages/Login/Login'))
@@ -16,12 +16,13 @@ export interface IRoute {
   allowAuth?: boolean
 }
 
-export enum RoutePath {
-  LIST_PHONE = '/',
-  VIEW_PHONE = '/:id',
-  LOGIN = '/login',
-  ADD_PHONE = '/add',
-  EDIT_PHONE = '/edit/:id'
+export const RoutePath = {
+  LIST_PHONE: '/',
+  VIEW_PHONE: (id: string = ':id') => `/${id}`,
+  LOGIN: '/login',
+  ADD_PHONE: '/add',
+  EDIT_PHONE: (id: string = ':id') => `/edit/${id}`,
+  ERROR404: '/404'
 }
 
 export const routes: IRoute[] = [
@@ -38,7 +39,7 @@ export const routes: IRoute[] = [
     element: <Login />
   },
   {
-    path: RoutePath.VIEW_PHONE,
+    path: RoutePath.VIEW_PHONE(),
     allowAuth: true,
     lazy: true,
     element: <ViewContact />,
@@ -50,15 +51,20 @@ export const routes: IRoute[] = [
     element: <AddContact />
   },
   {
-    path: RoutePath.EDIT_PHONE,
+    path: RoutePath.EDIT_PHONE(),
     allowAuth: true,
     lazy: true,
     element: <EditContact />
   },
   {
-    path: '*',
+    path: RoutePath.ERROR404,
     lazy: true,
     element: <Error404 />
+  },
+  {
+    path: '*',
+    lazy: true,
+    element: <Navigate to={RoutePath.ERROR404} state={{ from: location }} replace={true} />
   }
 ]
 
