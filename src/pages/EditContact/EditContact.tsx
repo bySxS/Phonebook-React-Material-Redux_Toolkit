@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { lazy, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RoutePath } from 'Router'
+
+export const EditContactLazy = lazy(() => import('pages/EditContact/EditContact'))
 
 const EditContact = () => {
   const { id } = useParams()

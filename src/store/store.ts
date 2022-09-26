@@ -1,6 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import phonebookReducer from './phonebook/phonebook.slice'
-import userReducer from './user/user.slice'
+import phonebookReducer from '../features/contacts/store/phonebook.slice'
+import userReducer from '../features/auth/store/user.slice'
 
 export const store = configureStore({
   reducer: {

@@ -1,12 +1,12 @@
+import React from 'react'
 import {
   Button, Card, CardActions,
   CardContent, CardMedia, Grid, Typography
 } from '@mui/material'
-import React, { useState } from 'react'
-import { IContacts } from 'ts-types/Contacts.interface'
+import { useContacts } from 'features/contacts/hooks/useContacts'
 
 const Contacts = () => {
-  const [contacts] = useState<IContacts[]>([])
+  const { contacts } = useContacts()
 
   return (
     <Grid container spacing={4}>

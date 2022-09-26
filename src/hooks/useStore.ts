@@ -1,9 +1,14 @@
 import { bindActionCreators } from '@reduxjs/toolkit'
-import { useMemo } from 'react'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { phonebookAction, selectContacts, selectLoading } from 'store/phonebook/phonebook.slice'
+import {
+  TypedUseSelectorHook, useDispatch, useSelector
+} from 'react-redux';
+import {
+  phonebookAction
+} from 'features/contacts/store/phonebook.slice'
 import type { RootState, AppDispatch } from 'store/store';
-import { selectIsAuth, userAction } from 'store/user/user.slice'
+import { userAction } from 'features/auth/store/user.slice'
+import { fetchPhoneBookAsync } from 'features/contacts/store/phonebook.thunks'
+import { fetchLoginAsync } from 'features/auth/store/user.thunks'
 
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
@@ -11,22 +16,9 @@ export const useAppActions = () => {
   const dispatch = useAppDispatch()
   const actions = {
     ...phonebookAction,
-    ...userAction
+    ...userAction,
+    fetchPhoneBookAsync,
+    fetchLoginAsync
   }
   return bindActionCreators(actions, dispatch)
-}
-
-export const useAuth = () => {
-  const isAuth = useAppSelector(selectIsAuth)
-  return useMemo(() => ({
-    isAuth
-  }), [isAuth])
-}
-
-export const useContacts = () => {
-  const contacts = useAppSelector(selectContacts)
-  const loadingContacts = useAppSelector(selectLoading)
-  return useMemo(() => ({
-    contacts, loadingContacts
-  }), [contacts, loadingContacts])
 }

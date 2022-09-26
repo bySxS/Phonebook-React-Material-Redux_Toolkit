@@ -1,50 +1,38 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy } from 'react'
 import { Helmet } from 'react-helmet-async'
 import {
   Avatar, Box, Button, TextField, Typography
 } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useDebounce } from 'hooks/useDebounce'
 import { useNavigate } from 'react-router-dom'
-import { validateUser } from 'utils/validators'
 import { useAppActions } from 'hooks/useStore'
+import { SubmitHandler, useForm } from 'react-hook-form'
+
+export const LoginLazy = lazy(() => import('pages/Login/Login'))
+
+interface IFormInputs {
+  email: string
+  password: string
+}
 
 const Login = () => {
-  const { login } = useAppActions()
-  const navigate = useNavigate()
-  const [formState, setFormState] = useState<{ email: string, password: string }>({
-    email: '',
-    password: ''
-  })
-  const formStateDebounce = useDebounce(formState)
-  const [validated, setValidated] = useState(false)
-  const [errors, setErrors] = useState<{
-    email?: string
-    password?: string
-  }>({})
-
-  useEffect(() => {
-    const result = validateUser(formState)
-    setValidated(result.success)
-    setErrors(result.errors)
-  }, [formStateDebounce])
-
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (!validated) {
-      return false
+  
+  const {
+    register, formState: { errors, isValid }, handleSubmit
+  } = useForm<IFormInputs>({
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: ''
     }
-    event.preventDefault()
-    console.log(formState)
-    login()
+  })
+  const { fetchLoginAsync } = useAppActions()
+  const navigate = useNavigate()
+  
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
+    fetchLoginAsync(data)
     navigate('/')
   }
-
-  const handleChangeInput =
-    ({ target: { name, value }, currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
-      setFormState((prev: any) => ({ ...prev, [name]: value }))
-      currentTarget.checkValidity()
-    }
 
   return (
     <>
@@ -65,18 +53,30 @@ const Login = () => {
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '450px' }}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{ mt: 1, width: '450px' }}
+      >
         <TextField
           margin="normal"
           required
           fullWidth
-          id={errors.email ? 'outlined-error-helper-text' : 'email'}
-          error={!!errors.email}
+          id={'email'}
+          error={!!errors.email?.message}
           label={'Email Address'}
-          helperText={errors.email ? errors.email : ''}
+          {...register('email', {
+            required: {
+              value: true,
+              message: 'required field'
+            },
+            pattern: {
+              value: /^(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})$/,
+              message: 'Please enter a correct e-mail'
+            }
+          })}
+          helperText={errors.email?.message || ''}
           name="email"
-          value={formState.email}
-          onChange={handleChangeInput}
           autoComplete="email"
           autoFocus
         />
@@ -84,14 +84,21 @@ const Login = () => {
           margin="normal"
           required
           fullWidth
-          name="password"
           type="password"
-          id={errors.password ? 'outlined-error-helper-text2' : 'password'}
-          error={!!errors.password}
+          id={'password'}
+          error={!!errors.password?.message}
           label={'Password'}
-          helperText={errors.password ? errors.password : ''}
-          value={formState.password}
-          onChange={handleChangeInput}
+          helperText={errors.password?.message || ''}
+          {...register('password', {
+            required: {
+              value: true,
+              message: 'required field'
+            },
+            pattern: {
+              value: /^((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})$/,
+              message: 'Password must be at least 8 characters, at least 1 number, 1 capital letter and 1 small letter'
+            }
+          })}
           autoComplete="current-password"
         />
         {/* <FormControlLabel */}
@@ -102,7 +109,7 @@ const Login = () => {
           type="submit"
           fullWidth
           variant="contained"
-          disabled={!validated}
+          disabled={!isValid}
           sx={{ mt: 3, mb: 2 }}
         >
           Sign In

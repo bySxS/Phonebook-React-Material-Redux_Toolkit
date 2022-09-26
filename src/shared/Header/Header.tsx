@@ -2,7 +2,9 @@ import React from 'react'
 import { AppBar, Toolbar, Typography } from '@mui/material'
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import { NavLink } from 'react-router-dom'
-import { useAppActions, useAuth } from 'hooks/useStore'
+import { useAppActions } from 'hooks/useStore'
+import { useAuth } from 'features/auth/hooks/useAuth'
+import { RoutePath } from 'Router'
 import styles from './Header.module.scss'
 
 const Header = () => {
@@ -18,8 +20,8 @@ const Header = () => {
           </nav>
           <nav className={styles.login}>
             {isAuth
-            ? <NavLink className={styles.link} to={'/'} onClick={() => logout()}>Logout</NavLink>
-            : <NavLink className={styles.link} to={'/login'}>Login</NavLink>
+            ? <NavLink className={styles.link} to={RoutePath.LOGIN} onClick={() => logout()}>Logout</NavLink>
+            : <NavLink className={styles.link} to={RoutePath.LOGIN}>Login</NavLink>
             }
           </nav>
         </Typography>

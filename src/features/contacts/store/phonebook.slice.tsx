@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from 'store/store'
-import { IContacts } from 'ts-types/Contacts.interface'
-import { fetchPhoneBook } from './phonebook.api';
+import { IContacts } from 'features/contacts/ts/Contacts.interface'
+import { fetchPhoneBookAsync } from './phonebook.thunks'
 
 export interface IUserState {
   contacts: IContacts[]
@@ -12,14 +12,6 @@ const initialState: IUserState = {
   contacts: [],
   status: ''
 }
-
-export const fetchPhoneBookAsync = createAsyncThunk(
-  'phonebook/fetch',
-  async () => {
-    const response = await fetchPhoneBook()
-    return response.json()
-  }
-)
 
 export const phonebookSlice = createSlice({
   name: 'phonebook',
@@ -44,23 +36,34 @@ export const phonebookSlice = createSlice({
   extraReducers: (builder) => {
     builder
     .addCase(fetchPhoneBookAsync.pending, (state) => {
-      state.status = 'loading';
+      state.status = 'loading'
     })
     .addCase(fetchPhoneBookAsync.fulfilled, (state, action) => {
-      state.status = 'idle';
-      state.contacts += action.payload;
+      state.status = 'idle'
+      const contacts: IContacts[] = action.payload
+      state.contacts = contacts.sort((a, b) => {
+      const nameA = a.name.first.toLowerCase()
+      const nameB = b.name.first.toLowerCase()
+      if (nameA < nameB) {
+        return -1
+      }
+      if (nameA > nameB) {
+        return 1
+      }
+      return 0
+      })
     })
     .addCase(fetchPhoneBookAsync.rejected, (state) => {
-      state.status = 'failed';
+      state.status = 'failed'
     })
   }
 })
 
 // export const { addContact, editContact, deleteContact } = phonebookSlice.actions;
-export const phonebookAction = phonebookSlice.actions;
+export const phonebookAction = phonebookSlice.actions
 
-export const selectContacts = (state: RootState) => state.phonebook.contacts;
-export const selectLoading = (state: RootState) => state.phonebook.status;
+export const selectContacts = (state: RootState): IContacts[] => state.phonebook.contacts
+export const selectLoading = (state: RootState): string => state.phonebook.status
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.
@@ -73,4 +76,4 @@ export const selectLoading = (state: RootState) => state.phonebook.status;
 //       }
 //     };
 
-export default phonebookSlice.reducer;
+export default phonebookSlice.reducer
