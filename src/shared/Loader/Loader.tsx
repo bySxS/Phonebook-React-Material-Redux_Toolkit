@@ -5,7 +5,7 @@ interface ILoaderProps {
   alwaysShow?: boolean
 }
 
-const Loader: FC<ILoaderProps> = ({ alwaysShow = false }) => {
+const Loader: FC<ILoaderProps> = ({ alwaysShow = true }) => {
   return (
     <div style={{ zIndex: 1000 }}>
       {(alwaysShow !== undefined && alwaysShow) &&
