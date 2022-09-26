@@ -71,7 +71,7 @@ const Login = () => {
               message: 'required field'
             },
             pattern: {
-              value: /^(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})$/,
+              value: /^([a-zA-Z\d_.]{1,40}@[a-zA-Z_]+?\.[a-zA-Z]{2,6})$/,
               message: 'Please enter a correct e-mail'
             }
           })}
