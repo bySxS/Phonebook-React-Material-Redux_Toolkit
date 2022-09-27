@@ -1,24 +1,23 @@
-import React, { lazy, useEffect } from 'react'
+import React, { lazy } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useNavigate, useParams } from 'react-router-dom'
-import { RoutePath } from 'router'
+import { useParams } from 'react-router-dom'
+import { useContacts } from 'features/contacts/hooks/use-сontacts'
+import { IContacts } from 'features/contacts/ts/сontacts-interface'
+import { useAppSelector } from '../hooks/use-store'
 
 export const EditContactLazy = lazy(() => import('pages/edit-contact'))
 
 const EditContact = () => {
+  const { contactById } = useContacts()
   const { id } = useParams()
-  const navigate = useNavigate()
-  useEffect(() => {
-    if (id && isNaN(+id)) {
-      navigate(RoutePath.ERROR404)
-    }
-  }, [id, navigate])
+  const contact: IContacts = useAppSelector(contactById(id || ''))
+  
   return (
     <>
       <Helmet title={'Edit contact'}>
         <meta charSet="utf-8" />
       </Helmet>
-      <div>Edit contact</div>
+      <div>Edit {contact.name.first}</div>
     </>
   )
 }

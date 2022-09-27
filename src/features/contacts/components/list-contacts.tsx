@@ -5,15 +5,31 @@ import {
   ListItemText, ListSubheader,
 } from '@mui/material'
 import { useContacts } from 'features/contacts/hooks/use-сontacts'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import { useNavigate } from 'react-router-dom'
+import { RoutePath } from 'router'
 
 const ListContacts = () => {
-  const { fetchContacts, contacts, isLoading } = useContacts()
+  const navigate = useNavigate()
+  const { fetchContacts, contacts, isLoading, deleteContact } = useContacts()
   useEffect(() => {
     if (contacts.length === 0 && !isLoading) {
       fetchContacts()
     }
   }, [isLoading, contacts, fetchContacts])
-  
+  const onDelete = (id: string, name: string) => {
+    const result = confirm(`You are sure that you want to delete the contact - ${name}?`)
+    if (result) {
+      deleteContact(id)
+    }
+  }
+  const onChange = (id: string) => {
+    navigate(RoutePath.EDIT_CONTACT(id))
+  }
+  const onView = (id: string) => {
+    navigate(RoutePath.VIEW_CONTACT(id))
+  }
   return (
       <div className={'flex flex-col items-center'}>
         <List
@@ -37,12 +53,26 @@ const ListContacts = () => {
                   {contact.name.first[0]}
                 </ListSubheader>
               }
-              <ListItemButton>
+              <ListItemButton onClick={() => onView(contact.id)}>
                 <ListItemIcon>
                   <PermContactCalendarIcon/>
                 </ListItemIcon>
-                <ListItemText
-                  primary={`${contact.name.first} ${contact.name.last}`}
+                <ListItemText>
+                  {`${contact.name.first} ${contact.name.last}`}
+                </ListItemText>
+                <EditIcon
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onChange(contact.id)
+                  }}
+                  className={'text-blue-700 hover:text-blue-400 mr-2'}
+                />
+                <DeleteIcon
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onDelete(contact.id, `${contact.name.first} ${contact.name.last}`)
+                  }}
+                  className={'text-red-700 hover:text-red-400'}
                 />
               </ListItemButton>
               </span>

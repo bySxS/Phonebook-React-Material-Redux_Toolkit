@@ -9,6 +9,9 @@ import { IContacts } from '../ts/сontacts-interface'
 export const useContacts = () => {
   const contactsState = useCallback((state: RootState): IContacts[] => state.phonebook.contacts, [])
   const statusState = useCallback((state: RootState): string => state.phonebook.status, [])
+  const contactById = useCallback((id: string) =>
+    createSelector(contactsState, items =>
+      items.filter(i => i.id === id)[0]), [contactsState])
   const isLoading = useAppSelector(createSelector(statusState, (item): boolean => item === 'loading'))
   const status = useAppSelector(statusState)
   const contacts = useAppSelector(contactsState)
@@ -22,7 +25,8 @@ export const useContacts = () => {
       ...bindActionCreators (actions, dispatch),
       contacts,
       isLoading,
-      status
+      status,
+      contactById
     }
-  }, [contacts, isLoading, status, dispatch])
+  }, [contacts, isLoading, status, dispatch, contactById])
 }
