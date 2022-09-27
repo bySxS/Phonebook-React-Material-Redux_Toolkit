@@ -1,14 +1,14 @@
 import React, { Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Loader from 'shared/Loader/Loader'
-import { AddContactLazy } from './pages/AddContact/AddContact'
-import { EditContactLazy } from './pages/EditContact/EditContact'
-import { Error404Lazy } from './pages/Error404/Error404'
-import { ListContactsLazy } from './pages/ListContact/ListContact'
-import { LoginLazy } from './pages/Login/Login'
-import { ViewContactLazy } from './pages/ViewContact/ViewContact'
-import PublicRoute from './shared/PublicRoute/PublicRoute'
-import ProtectedRoute from 'shared/ProtectedRoute/ProtectedRoute'
+import Loader from 'shared/loader'
+import { AddContactLazy } from './pages/add-contact'
+import { EditContactLazy } from './pages/edit-contact'
+import { Error404Lazy } from './pages/error404'
+import { ContactsLazy } from './pages/сontacts'
+import { LoginLazy } from './pages/login'
+import { ViewContactLazy } from './pages/view-contact'
+import PublicRoute from './shared/public-route'
+import ProtectedRoute from 'shared/protected-route'
 
 export const RoutePath = {
   LIST_CONTACT: '/',
@@ -22,13 +22,13 @@ export const RoutePath = {
 const AppRouter = () => {
   return (
     <>
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<Loader alwaysShow={true} />}>
       <Routes>
           <Route
             path={RoutePath.LIST_CONTACT}
             element={
             <ProtectedRoute>
-              <ListContactsLazy />
+              <ContactsLazy />
             </ProtectedRoute>}
           />
           <Route

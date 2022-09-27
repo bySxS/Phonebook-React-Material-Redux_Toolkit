@@ -2,8 +2,11 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const fetchLoginAsync = createAsyncThunk(
   'user/login',
-  ({ email, password }: { email: string, password: string }) => {
-    console.log(email, password)
-    return true
+  ({ email }: { email: string, password?: string }): Promise<string> => {
+    return new Promise<string>((resolve) => {
+      setTimeout(() => {
+        resolve(email)
+      }, 1000)
+    })
   }
 )

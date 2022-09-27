@@ -1,7 +1,7 @@
 import React, { lazy } from 'react'
 import { Helmet } from 'react-helmet-async'
 
-export const AddContactLazy = lazy(() => import('pages/AddContact/AddContact'))
+export const AddContactLazy = lazy(() => import('pages/add-contact'))
 
 const AddContact = () => {
   return (

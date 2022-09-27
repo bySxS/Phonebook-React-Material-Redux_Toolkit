@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from 'store/store'
-import { IContacts } from 'features/contacts/ts/Contacts.interface'
-import { fetchPhoneBookAsync } from './phonebook.thunks'
+import { IContacts } from 'features/contacts/ts/сontacts-interface'
+import { fetchPhoneBookAsync } from './phonebook-thunks'
+
+type TStatus = 'loading' | 'idle' | 'failed' | ''
 
 export interface IUserState {
   contacts: IContacts[]
-  status: 'loading' | 'idle' | 'failed' | ''
+  status: TStatus
 }
 
 const initialState: IUserState = {
@@ -61,9 +62,6 @@ export const phonebookSlice = createSlice({
 
 // export const { addContact, editContact, deleteContact } = phonebookSlice.actions;
 export const phonebookAction = phonebookSlice.actions
-
-export const selectContacts = (state: RootState): IContacts[] => state.phonebook.contacts
-export const selectLoading = (state: RootState): string => state.phonebook.status
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

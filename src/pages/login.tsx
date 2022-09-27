@@ -5,10 +5,10 @@ import {
 } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom'
-import { useAppActions } from 'hooks/useStore'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useAuth } from 'features/auth/hooks/use-auth'
 
-export const LoginLazy = lazy(() => import('pages/Login/Login'))
+export const LoginLazy = lazy(() => import('pages/login'))
 
 interface IFormInputs {
   email: string
@@ -26,11 +26,11 @@ const Login = () => {
       password: ''
     }
   })
-  const { fetchLoginAsync } = useAppActions()
+  const { login } = useAuth()
   const navigate = useNavigate()
   
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    fetchLoginAsync(data)
+    login(data)
     navigate('/')
   }
 

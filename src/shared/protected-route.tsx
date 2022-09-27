@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { RoutePath } from 'Router'
-import { useAuth } from 'features/auth/hooks/useAuth'
+import { RoutePath } from 'router'
+import { useAuth } from 'features/auth/hooks/use-auth'
 
 interface IProtectedRouteProps {
   children?: JSX.Element

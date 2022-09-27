@@ -1,12 +1,13 @@
 import React from 'react';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
-import 'styles/App.css';
-import Header from 'shared/Header/Header'
-import Main from 'shared/Main/Main'
-import Footer from 'shared/Footer/Footer'
+import 'styles/app.css';
+import Header from 'shared/header'
+import Main from 'shared/main'
+import Footer from 'shared/footer'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
-import AppRouter from './Router'
+import AppRouter from './router'
+import Loader from './shared/loader'
 
 const theme = createTheme({
   palette: {
@@ -30,6 +31,7 @@ function App() {
         <Main>
           <AppRouter />
         </Main>
+        <Loader />
         <Footer />
       </ThemeProvider>
     </div>

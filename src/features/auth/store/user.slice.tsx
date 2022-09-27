@@ -1,22 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { RootState } from 'store/store'
 import { fetchLoginAsync } from './user.thunks'
 
-const LS_IS_AUTH_KEY = 'risAk'
+const LS_USER_KEY = 'ruk'
+
+type TStatus = 'loading' | 'idle' | 'failed' | ''
 
 export interface IUserState {
-  isAuth: boolean
-  status: 'loading' | 'idle' | 'failed' | ''
+  user: string
+  status: TStatus
 }
 
 const initialState: IUserState = {
-  isAuth: localStorage.getItem(LS_IS_AUTH_KEY) === '1',
+  user: localStorage.getItem(LS_USER_KEY) || '',
   status: ''
 }
 
 const logout = (state: IUserState) => {
-  state.isAuth = false
-  localStorage.removeItem(LS_IS_AUTH_KEY)
+  state.user = ''
+  localStorage.removeItem(LS_USER_KEY)
 }
 
 export const userSlice = createSlice({
@@ -33,8 +34,8 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLoginAsync.fulfilled, (state, action) => {
         state.status = 'idle'
-        state.isAuth = action.payload
-        localStorage.setItem(LS_IS_AUTH_KEY, '1')
+        state.user = action.payload
+        localStorage.setItem(LS_USER_KEY, state.user)
       })
       .addCase(fetchLoginAsync.rejected, (state) => {
         state.status = 'failed'
@@ -45,7 +46,5 @@ export const userSlice = createSlice({
 
 // export const { login, logout } = userSlice.actions;
 export const userAction = userSlice.actions
-
-export const selectIsAuth = (state: RootState): boolean => state.user.isAuth
 
 export default userSlice.reducer;

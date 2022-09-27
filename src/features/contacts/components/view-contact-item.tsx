@@ -1,13 +1,9 @@
+import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material'
 import React from 'react'
-import {
-  Button, Card, CardActions,
-  CardContent, CardMedia, Grid, Typography
-} from '@mui/material'
-import { useContacts } from 'features/contacts/hooks/useContacts'
+import { useContacts } from '../hooks/use-сontacts'
 
-const Contacts = () => {
+const ViewContactItem = () => {
   const { contacts } = useContacts()
-
   return (
     <Grid container spacing={4}>
       {contacts.map((contact, i) => (
@@ -44,4 +40,4 @@ const Contacts = () => {
   )
 }
 
-export default Contacts
+export default ViewContactItem

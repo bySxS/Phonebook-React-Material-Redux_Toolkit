@@ -2,14 +2,12 @@ import React from 'react'
 import { AppBar, Toolbar, Typography } from '@mui/material'
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import { NavLink } from 'react-router-dom'
-import { useAppActions } from 'hooks/useStore'
-import { useAuth } from 'features/auth/hooks/useAuth'
-import { RoutePath } from 'Router'
-import styles from './Header.module.scss'
+import { useAuth } from 'features/auth/hooks/use-auth'
+import { RoutePath } from 'router'
+import styles from './header.module.scss'
 
 const Header = () => {
-  const { isAuth } = useAuth()
-  const { logout } = useAppActions()
+  const { isAuth, logout, user } = useAuth()
   return (
     <AppBar position="relative">
       <Toolbar>
@@ -20,7 +18,7 @@ const Header = () => {
           </nav>
           <nav className={styles.login}>
             {isAuth
-            ? <NavLink className={styles.link} to={RoutePath.LOGIN} onClick={() => logout()}>Logout</NavLink>
+            ? <>({user}) <NavLink className={styles.link} to={RoutePath.LOGIN} onClick={() => logout()}>Logout</NavLink></>
             : <NavLink className={styles.link} to={RoutePath.LOGIN}>Login</NavLink>
             }
           </nav>
