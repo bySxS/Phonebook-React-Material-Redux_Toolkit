@@ -1,13 +1,14 @@
 import { bindActionCreators, createSelector } from '@reduxjs/toolkit'
 import { useCallback, useMemo } from 'react'
 import { RootState } from 'store/store'
+import { TStatus } from 'ts-types/status'
 import { userAction } from '../store/user.slice'
 import { useAppDispatch, useAppSelector } from 'hooks/use-store'
 import { fetchLoginAsync } from '../store/user.thunks'
 
 export const useAuth = () => {
   const userState = useCallback((state: RootState): string => state.user.user, [])
-  const statusState = useCallback((state: RootState): string => state.user.status, [])
+  const statusState = useCallback((state: RootState): TStatus => state.user.status, [])
   const isAuth = useAppSelector(createSelector(userState, (item): boolean => item !== ''))
   const isLoading = useAppSelector(createSelector(statusState, (item): boolean => item === 'loading'))
   const user = useAppSelector(userState)

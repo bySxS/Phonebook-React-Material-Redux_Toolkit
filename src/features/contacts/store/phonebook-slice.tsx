@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { IContacts } from 'features/contacts/ts/сontacts-interface'
+import { TStatus } from 'ts-types/status'
+import { sortContacts } from '../utils/sort'
 import { fetchPhoneBookAsync } from './phonebook-thunks'
-
-type TStatus = 'loading' | 'idle' | 'failed' | ''
 
 export interface IUserState {
   contacts: IContacts[]
@@ -20,6 +20,7 @@ export const phonebookSlice = createSlice({
   reducers: {
     addContact: (state, action: PayloadAction<IContacts>) => {
       state.contacts.push(action.payload)
+      state.contacts = sortContacts(state.contacts)
     },
     editContact: (state, action: PayloadAction<IContacts>) => {
       const { payload } = action
@@ -29,6 +30,7 @@ export const phonebookSlice = createSlice({
         }
         return o
       })
+      state.contacts = sortContacts(state.contacts)
     },
     deleteContact: (state, action: PayloadAction<string>) => {
       state.contacts = state.contacts.filter(o => o.id !== action.payload)
@@ -41,18 +43,13 @@ export const phonebookSlice = createSlice({
     })
     .addCase(fetchPhoneBookAsync.fulfilled, (state, action) => {
       state.status = 'idle'
-      const contacts: IContacts[] = action.payload
-      state.contacts = contacts.sort((a, b) => {
-      const nameA = a.name.first.toLowerCase()
-      const nameB = b.name.first.toLowerCase()
-      if (nameA < nameB) {
-        return -1
-      }
-      if (nameA > nameB) {
-        return 1
-      }
-      return 0
-      })
+      const prevContacts = state.contacts ?? []
+      const ids = new Set(prevContacts.map(o => o.id))
+      const contacts: IContacts[] = [
+        ...prevContacts,
+        ...action.payload.filter(o => !ids.has(o.id))
+      ]
+      state.contacts = sortContacts(contacts)
     })
     .addCase(fetchPhoneBookAsync.rejected, (state) => {
       state.status = 'failed'

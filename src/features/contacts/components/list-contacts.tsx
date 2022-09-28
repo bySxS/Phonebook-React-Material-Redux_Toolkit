@@ -1,8 +1,9 @@
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
 import React, { useEffect } from 'react'
 import {
- List, ListItemButton, ListItemIcon,
-  ListItemText, ListSubheader,
+  Button,
+  List, ListItemButton, ListItemIcon,
+  ListItemText, ListSubheader
 } from '@mui/material'
 import { useContacts } from 'features/contacts/hooks/use-сontacts'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -12,12 +13,12 @@ import { RoutePath } from 'router'
 
 const ListContacts = () => {
   const navigate = useNavigate()
-  const { fetchContacts, contacts, isLoading, deleteContact } = useContacts()
+  const { fetchContacts, contacts, isLoading, status, deleteContact } = useContacts()
   useEffect(() => {
-    if (contacts.length === 0 && !isLoading) {
+    if (status !== 'idle' && !isLoading) {
       fetchContacts()
     }
-  }, [isLoading, contacts, fetchContacts])
+  }, [isLoading, status, fetchContacts])
   const onDelete = (id: string, name: string) => {
     const result = confirm(`You are sure that you want to delete the contact - ${name}?`)
     if (result) {
@@ -30,8 +31,18 @@ const ListContacts = () => {
   const onView = (id: string) => {
     navigate(RoutePath.VIEW_CONTACT(id))
   }
+  const onAdd = () => {
+    navigate(RoutePath.ADD_CONTACT)
+  }
   return (
       <div className={'flex flex-col items-center'}>
+        <div>
+          <Button variant={'contained'}
+                  onClick={onAdd}
+          >
+            Добавить контакт
+          </Button>
+        </div>
         <List
           sx={{
             width: '100%',

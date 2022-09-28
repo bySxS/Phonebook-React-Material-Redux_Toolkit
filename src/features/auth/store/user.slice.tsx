@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { TStatus } from 'ts-types/status'
 import { fetchLoginAsync } from './user.thunks'
 
 const LS_USER_KEY = 'ruk'
-
-type TStatus = 'loading' | 'idle' | 'failed' | ''
 
 export interface IUserState {
   user: string

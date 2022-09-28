@@ -12,7 +12,7 @@ import ProtectedRoute from 'shared/protected-route'
 
 export const RoutePath = {
   LIST_CONTACT: '/',
-  VIEW_CONTACT: (id: string = ':id') => `/${id}`,
+  VIEW_CONTACT: (id: string = ':id') => `/contact/${id}`,
   LOGIN: '/login',
   ADD_CONTACT: '/add',
   EDIT_CONTACT: (id: string = ':id') => `/edit/${id}`,
@@ -40,19 +40,19 @@ const AppRouter = () => {
               }
           />
           <Route
-            path={RoutePath.VIEW_CONTACT()}
-            element={
-            <ProtectedRoute>
-              <ViewContactLazy />
-            </ProtectedRoute>}
-          />
-          <Route
             path={RoutePath.ADD_CONTACT}
             element={
             <ProtectedRoute>
               <AddContactLazy />
             </ProtectedRoute>}
           />
+        <Route
+          path={RoutePath.VIEW_CONTACT()}
+          element={
+            <ProtectedRoute>
+              <ViewContactLazy />
+            </ProtectedRoute>}
+        />
           <Route
             path={RoutePath.EDIT_CONTACT()}
             element={

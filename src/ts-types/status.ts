@@ -1,0 +1,1 @@
+export type TStatus = 'loading' | 'idle' | 'failed' | ''
