@@ -73,7 +73,7 @@ const ListContacts = () => {
         >
           {contacts.map((contact, i, all) => (
               <span key={contact.id}>
-              {(i === 0 || (i > 0 && contact.name.first[0] !== all[i-1]?.name?.first[0])) &&
+              {(i === 0 || (i > 0 && contact.name.first[0].toLowerCase() !== all[i-1]?.name?.first[0].toLowerCase())) &&
                 <ListSubheader component="div" sx={{ fontSize: '16px' }} id="nested-list-subheader">
                   {contact.name.first[0]}
                 </ListSubheader>
