@@ -57,27 +57,27 @@ const FormEditContact: FC<IFormEditContact> = ({
       >
         <TextField
           margin="normal"
+          required
           fullWidth
-          id={'age'}
-          error={!!errors.age?.message}
-          label={'Age'}
-          {...register('age', {
-            min: {
-              value: 1,
-              message: 'Min value 1'
+          id={'phone'}
+          error={!!errors.phone?.message}
+          label={'Phone'}
+          {...register('phone', {
+            required: {
+              value: true,
+              message: 'required field'
             },
-            max: {
-              value: 120,
-              message: 'Max value 120'
-            },
+            pattern: {
+              value: /^\+?\d?\s?[-(]?\d{3}\)\s?-?\d{3}-?\d{2}-?\d{2,3}$/,
+              message: 'Please enter a correct phone number, example: +3 (805) 01234567'
+            }
           })}
-          type={'number'}
-          helperText={errors.age?.message || ''}
-          name="age"
-          autoComplete="age"
+          helperText={errors.phone?.message || ''}
+          name="phone"
+          type={'tel'}
+          autoComplete="phone"
           autoFocus
         />
-        
         <TextField
           margin="normal"
           required
@@ -117,6 +117,28 @@ const FormEditContact: FC<IFormEditContact> = ({
         <TextField
           margin="normal"
           fullWidth
+          id={'age'}
+          error={!!errors.age?.message}
+          label={'Age'}
+          {...register('age', {
+            min: {
+              value: 1,
+              message: 'Min value 1'
+            },
+            max: {
+              value: 120,
+              message: 'Max value 120'
+            }
+          })}
+          type={'number'}
+          helperText={errors.age?.message || ''}
+          name="age"
+          autoComplete="age"
+          autoFocus
+        />
+        <TextField
+          margin="normal"
+          fullWidth
           type="text"
           id={'company'}
           error={!!errors.company?.message}
@@ -143,29 +165,6 @@ const FormEditContact: FC<IFormEditContact> = ({
           helperText={errors.email?.message || ''}
           name="email"
           autoComplete="email"
-          autoFocus
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id={'phone'}
-          error={!!errors.phone?.message}
-          label={'Phone'}
-          {...register('phone', {
-            required: {
-              value: true,
-              message: 'required field'
-            },
-            pattern: {
-              value: /^\+?\d?\s?[-(]?\d{3}\)\s?-?\d{3}-?\d{2}-?\d{2,3}$/,
-              message: 'Please enter a correct phone number, example: +3 (805) 01234567'
-            }
-          })}
-          helperText={errors.phone?.message || ''}
-          name="phone"
-          type={'tel'}
-          autoComplete="phone"
           autoFocus
         />
         <TextField
