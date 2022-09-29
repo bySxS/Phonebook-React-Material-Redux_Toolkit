@@ -7,9 +7,7 @@ export const ContactsLazy = lazy(() => import('pages/contacts'))
 const Contacts = () => {
   return (
     <>
-      <Helmet title={'List contacts'}>
-        <meta charSet="utf-8" />
-      </Helmet>
+      <Helmet title={'List contacts'}/>
       <ListContacts />
     </>
   )

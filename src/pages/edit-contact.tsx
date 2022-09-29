@@ -16,12 +16,6 @@ const EditContact = () => {
   const navigate = useNavigate()
   const { id } = useParams()
   const contact: IContacts = useAppSelector(contactById(id || ''))
-  
-  const onChange = (contact: IContacts) => {
-    editContact(contact)
-    navigate(RoutePath.LIST_CONTACT)
-  }
-  
   useEffect(() => {
     if (!contact?.phone && status !== 'idle' && !error && !isLoading) {
       fetchContacts()
@@ -48,11 +42,14 @@ const EditContact = () => {
     ) // or redirect to page 404
   }
   
+  const onChange = (contact: IContacts) => {
+    editContact(contact)
+    navigate(RoutePath.LIST_CONTACT)
+  }
+  
   return (
     <>
-      <Helmet title={'Edit contact'}>
-        <meta charSet="utf-8" />
-      </Helmet>
+      <Helmet title={`Edit ${contact.phone} contact`}/>
       <FormEditContact contact={contact} onClickChange={onChange} />
     </>
   )

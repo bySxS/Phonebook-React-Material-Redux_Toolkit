@@ -42,9 +42,7 @@ const Login = () => {
 
   return (
     <>
-      <Helmet title={'Login'}>
-        <meta charSet="utf-8" />
-      </Helmet>
+      <Helmet title={'Login'}/>
     <Box
       sx={{
         marginTop: 0,

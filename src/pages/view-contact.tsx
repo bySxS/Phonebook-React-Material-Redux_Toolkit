@@ -42,9 +42,7 @@ const ViewContact = () => {
   
   return (
     <>
-      <Helmet title={'View contacts'}>
-        <meta charSet="utf-8" />
-      </Helmet>
+      <Helmet title={`${contact.phone} - View contacts`}/>
       <ViewContactItem contact={contact} />
     </>
   )

@@ -17,9 +17,7 @@ const AddContact = () => {
   }
   return (
     <>
-      <Helmet title={'Add contact'}>
-        <meta charSet="utf-8" />
-      </Helmet>
+      <Helmet title={'Add contact'}/>
       <FormEditContact onClickChange={onAdd} />
     </>
   )

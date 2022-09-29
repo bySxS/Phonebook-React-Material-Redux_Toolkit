@@ -1,5 +1,6 @@
 import { Box, Container } from '@mui/material'
 import React, { FC } from 'react'
+import { Helmet } from 'react-helmet-async'
 
 interface IMainProps {
   children: React.ReactNode
@@ -8,7 +9,12 @@ interface IMainProps {
 const Main: FC<IMainProps> = ({ children }) => {
   return (
     <main>
-      {/* Hero unit */}
+      <Helmet
+        titleTemplate={'%s - Site Contacts'}
+        defaultTitle={'Site Contacts'}
+      >
+        <meta charSet="utf-8" />
+      </Helmet>
       <Box
         sx={{
           bgcolor: 'background.paper',
