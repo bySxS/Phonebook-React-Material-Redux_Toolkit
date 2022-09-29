@@ -23,10 +23,10 @@ const EditContact = () => {
   }
   
   useEffect(() => {
-    if (!contact?.phone && status !== 'idle' && !isLoading) {
+    if (!contact?.phone && status !== 'idle' && !error && !isLoading) {
       fetchContacts()
     }
-  }, [contact, fetchContacts, isLoading, status])
+  }, [contact, fetchContacts, isLoading, status, error])
   
   if (isLoading) {
     return <LoaderText />
