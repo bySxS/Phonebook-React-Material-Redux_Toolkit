@@ -8,10 +8,6 @@ interface ViewContactItemProps {
 
 const ViewContactItem: FC<ViewContactItemProps> = ({ contact }) => {
   
-  if (!contact?.phone) {
-    return (<p>No contact:(</p>)
-  }
-  
   return (
           <Card
             sx={{
@@ -21,15 +17,6 @@ const ViewContactItem: FC<ViewContactItemProps> = ({ contact }) => {
               borderBottom: '1px solid #f2f2f2'
           }}
           >
-            {/* <CardMedia */}
-            {/*   component="img" */}
-            {/*   sx={{ */}
-            {/*     // 16:9 */}
-            {/*     pt: '56.25%', */}
-            {/*   }} */}
-            {/*   image="https://source.unsplash.com/random" */}
-            {/*   alt="random" */}
-            {/* /> */}
             <CardContent sx={{ flexGrow: 1 }}>
               <Typography gutterBottom variant="h5" component="h1">
                 {contact.phone}
@@ -46,10 +33,6 @@ const ViewContactItem: FC<ViewContactItemProps> = ({ contact }) => {
                 </>
               </Typography>
             </CardContent>
-            {/* <CardActions> */}
-            {/*   <Button size="small">Edit</Button> */}
-            {/*   <Button size="small">Delete</Button> */}
-            {/* </CardActions> */}
           </Card>
   )
 }

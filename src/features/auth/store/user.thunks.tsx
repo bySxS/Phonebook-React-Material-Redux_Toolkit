@@ -1,12 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { IUserLogin } from '../ts/user.interface'
+import { requestLoginUser } from './user.api'
 
 export const fetchLoginAsync = createAsyncThunk(
   'user/login',
-  ({ email }: { email: string, password?: string }): Promise<string> => {
-    return new Promise<string>((resolve) => {
-      setTimeout(() => {
-        resolve(email)
-      }, 1000)
-    })
+  async (args: IUserLogin, { rejectWithValue }) => {
+    try {
+      return await requestLoginUser(args)
+    } catch (e) {
+      return rejectWithValue(e)
+    }
   }
 )

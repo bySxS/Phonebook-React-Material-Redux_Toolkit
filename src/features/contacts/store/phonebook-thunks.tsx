@@ -3,7 +3,11 @@ import { fetchPhoneBook } from './phonebook-api'
 
 export const fetchPhoneBookAsync = createAsyncThunk(
   'phonebook/fetch',
-  async () => {
-    return await fetchPhoneBook()
+  async (arg, { rejectWithValue }) => {
+    try {
+      return await fetchPhoneBook()
+    } catch (e) {
+      return rejectWithValue(e)
+    }
   }
 )

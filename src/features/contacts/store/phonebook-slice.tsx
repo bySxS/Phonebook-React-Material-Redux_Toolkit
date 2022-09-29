@@ -7,11 +7,13 @@ import { fetchPhoneBookAsync } from './phonebook-thunks'
 export interface IUserState {
   contacts: IContacts[]
   status: TStatus
+  error: string
 }
 
 const initialState: IUserState = {
   contacts: [],
-  status: ''
+  status: '',
+  error: ''
 }
 
 export const phonebookSlice = createSlice({
@@ -40,19 +42,22 @@ export const phonebookSlice = createSlice({
     builder
     .addCase(fetchPhoneBookAsync.pending, (state) => {
       state.status = 'loading'
+      state.error = ''
     })
     .addCase(fetchPhoneBookAsync.fulfilled, (state, action) => {
       state.status = 'idle'
+      state.error = ''
       const prevContacts = state.contacts ?? []
       const ids = new Set(prevContacts.map(o => o.id))
       const contacts: IContacts[] = [
         ...prevContacts,
-        ...action.payload.filter(o => !ids.has(o.id))
+        ...(action.payload ? action.payload.filter(o => !ids.has(o.id)) : [])
       ]
       state.contacts = sortContacts(contacts)
     })
-    .addCase(fetchPhoneBookAsync.rejected, (state) => {
+    .addCase(fetchPhoneBookAsync.rejected, (state, action) => {
       state.status = 'failed'
+      state.error = action.payload as string
     })
   }
 })

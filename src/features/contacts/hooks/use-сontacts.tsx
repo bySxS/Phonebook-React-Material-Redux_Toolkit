@@ -10,12 +10,14 @@ import { IContacts } from '../ts/сontacts-interface'
 export const useContacts = () => {
   const contactsState = useCallback((state: RootState): IContacts[] => state.phonebook.contacts, [])
   const statusState = useCallback((state: RootState): TStatus => state.phonebook.status, [])
+  const errorState = useCallback((state: RootState): string => state.phonebook.error, [])
   const contactById = useCallback((id: string) =>
     createSelector(contactsState, items =>
       items.filter(i => i.id === id)[0]), [contactsState])
   const isLoading = useAppSelector(createSelector(statusState, (item): boolean => item === 'loading'))
   const status = useAppSelector(statusState)
   const contacts = useAppSelector(contactsState)
+  const error = useAppSelector(errorState)
   const dispatch = useAppDispatch()
   return useMemo(() => {
     const actions = {
@@ -27,7 +29,8 @@ export const useContacts = () => {
       contacts,
       isLoading,
       status,
+      error,
       contactById
     }
-  }, [contacts, isLoading, status, dispatch, contactById])
+  }, [contacts, isLoading, status, dispatch, error, contactById])
 }

@@ -7,15 +7,19 @@ const LS_USER_KEY = 'ruk'
 export interface IUserState {
   user: string
   status: TStatus
+  error: string
 }
 
 const initialState: IUserState = {
   user: localStorage.getItem(LS_USER_KEY) || '',
-  status: ''
+  status: '',
+  error: ''
 }
 
 const logout = (state: IUserState) => {
   state.user = ''
+  state.status = ''
+  state.error = ''
   localStorage.removeItem(LS_USER_KEY)
 }
 
@@ -30,15 +34,17 @@ export const userSlice = createSlice({
     builder
       .addCase(fetchLoginAsync.pending, (state) => {
         state.status = 'loading'
+        state.error = ''
       })
       .addCase(fetchLoginAsync.fulfilled, (state, action) => {
         state.status = 'idle'
         state.user = action.payload
+        state.error = ''
         localStorage.setItem(LS_USER_KEY, state.user)
       })
-      .addCase(fetchLoginAsync.rejected, (state) => {
+      .addCase(fetchLoginAsync.rejected, (state, action) => {
         state.status = 'failed'
-        logout(state)
+        state.error = action.payload as string
       })
   }
 })

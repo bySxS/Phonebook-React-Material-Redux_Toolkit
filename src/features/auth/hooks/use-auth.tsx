@@ -9,10 +9,12 @@ import { fetchLoginAsync } from '../store/user.thunks'
 export const useAuth = () => {
   const userState = useCallback((state: RootState): string => state.user.user, [])
   const statusState = useCallback((state: RootState): TStatus => state.user.status, [])
+  const errorState = useCallback((state: RootState): string => state.user.error, [])
   const isAuth = useAppSelector(createSelector(userState, (item): boolean => item !== ''))
   const isLoading = useAppSelector(createSelector(statusState, (item): boolean => item === 'loading'))
   const user = useAppSelector(userState)
   const status = useAppSelector(statusState)
+  const error = useAppSelector(errorState)
   const dispatch = useAppDispatch()
   return useMemo(() => {
     const actions = {
@@ -24,7 +26,8 @@ export const useAuth = () => {
       isAuth,
       user,
       isLoading,
-      status
+      status,
+      error
     }
-  }, [isAuth, user, status, isLoading, dispatch])
+  }, [isAuth, user, status, isLoading, error, dispatch])
 }

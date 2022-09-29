@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import React, { lazy, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import {
   Avatar, Box, Button, TextField, Typography
@@ -7,6 +7,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useAuth } from 'features/auth/hooks/use-auth'
+import LoaderText from '../shared/loader-text'
 
 export const LoginLazy = lazy(() => import('pages/login'))
 
@@ -26,13 +27,18 @@ const Login = () => {
       password: ''
     }
   })
-  const { login } = useAuth()
+  const { login, status, error, isLoading } = useAuth()
   const navigate = useNavigate()
   
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     login(data)
-    navigate('/')
   }
+  
+  useEffect(() => {
+    if (status === 'idle') {
+      navigate('/')
+    }
+  }, [navigate, status])
 
   return (
     <>
@@ -114,18 +120,12 @@ const Login = () => {
         >
           Sign In
         </Button>
-        {/* <Grid container> */}
-        {/*   <Grid item xs> */}
-        {/*     <Link href="#" variant="body2"> */}
-        {/*       Forgot password? */}
-        {/*     </Link> */}
-        {/*   </Grid> */}
-        {/*   <Grid item> */}
-        {/*     <Link href="#" variant="body2"> */}
-        {/*       {"Don't have an account? Sign Up"} */}
-        {/*     </Link> */}
-        {/*   </Grid> */}
-        {/* </Grid> */}
+        {isLoading && <LoaderText />}
+        {error &&
+          <Typography sx={{ color: 'red' }} component="h2" variant="h5">
+          {error}
+        </Typography>
+        }
       </Box>
     </Box>
     </>
