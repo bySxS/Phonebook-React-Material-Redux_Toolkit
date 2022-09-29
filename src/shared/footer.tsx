@@ -5,9 +5,9 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
+      <Link color="inherit" href="/">
+        Site Contacts
+      </Link>{' by SxS '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
